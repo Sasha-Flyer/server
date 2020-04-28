@@ -5,4 +5,4 @@ pip install aiohttp \
 pip install protobuf \
 pip install psutil \
 Запуск: \
-main.py\
+main.py
