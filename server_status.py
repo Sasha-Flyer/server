@@ -1,6 +1,6 @@
 import psutil
 import system_pb2
-from aiohttp import web
+from aiohttp import web, ClientTimeout
 from asyncio import sleep
 
 
@@ -16,7 +16,7 @@ def get_sys_info():
 
 
 async def websocket_handler(request):
-    ws = web.WebSocketResponse()
+    ws = web.WebSocketResponse(timeout=ClientTimeout(sock_read=10))
     await ws.prepare(request)
     while True:
         info = get_sys_info()
@@ -29,6 +29,15 @@ async def websocket_handler(request):
 app = web.Application()
 app.add_routes([web.get('/', websocket_handler)])
 
+def run_server():
+    try:
+        print("Введите порт, который будет прослушивать этот сервер для отправки данных о загруженности")
+        port = int(input())
+        web.run_app(app, port=port)
+    except OSError:
+        print("Система уже прослушивает выбранный порт. Перезапустите приложение и попробуйте указать другой порт")
+        input()
+
 if __name__ == '__main__':
-    web.run_app(app)
+    run_server()
 
