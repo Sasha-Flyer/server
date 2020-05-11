@@ -25,7 +25,7 @@ jobs:
 
       - name: Make exe file using Pyinstaller
         run: |
-          pyinstaller server_status.py
+          pyinstaller --onefile server_status.py
 
       - name: Create GitHub Release
         id: create_release
